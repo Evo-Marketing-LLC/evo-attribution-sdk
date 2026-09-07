@@ -1,0 +1,43 @@
+{
+  "name": "@evo-marketing/attribution-react-native",
+  "version": "0.1.0",
+  "description": "Dependency-free EVO install and purchase attribution for React Native apps.",
+  "license": "MIT",
+  "author": "EVO Marketing LLC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Evo-Marketing-LLC/evo-attribution-sdk.git",
+    "directory": "packages/react-native"
+  },
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "react-native": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format esm,cjs --dts --clean",
+    "test": "tsx --test src/index.test.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.0",
+    "tsup": "^8.5.0",
+    "tsx": "^4.20.5",
+    "typescript": "^5.9.2"
+  }
+}
