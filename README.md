@@ -23,7 +23,7 @@ import EVOAttribution
 ### React Native
 
 ```bash
-npm install @evo-marketing/attribution-react-native
+npm install @evomarketing/attribution-react-native
 ```
 
 The package has no peer dependencies. Bring the storage and optional clipboard adapters already used by your app.
@@ -76,7 +76,7 @@ import {
   configureEvoAttribution,
   trackInstall,
   trackPurchase,
-} from "@evo-marketing/attribution-react-native";
+} from "@evomarketing/attribution-react-native";
 
 configureEvoAttribution({
   pixelKey: "pk_your_brand_key",

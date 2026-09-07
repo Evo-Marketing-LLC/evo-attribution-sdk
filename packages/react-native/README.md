@@ -5,7 +5,7 @@ Add EVO install and purchase attribution to an Expo or bare React Native app. Th
 ## Install
 
 ```bash
-npm install @evo-marketing/attribution-react-native
+npm install @evomarketing/attribution-react-native
 ```
 
 ## Expo
@@ -19,7 +19,7 @@ import {
   configureEvoAttribution,
   trackInstall,
   trackPurchase,
-} from "@evo-marketing/attribution-react-native";
+} from "@evomarketing/attribution-react-native";
 
 configureEvoAttribution({
   pixelKey: "pk_your_brand_key",
@@ -60,7 +60,7 @@ import {
   configureEvoAttribution,
   trackInstall,
   trackPurchase,
-} from "@evo-marketing/attribution-react-native";
+} from "@evomarketing/attribution-react-native";
 
 configureEvoAttribution({
   pixelKey: "pk_your_brand_key",
@@ -78,7 +78,7 @@ await trackPurchase("store-transaction-id", 49.99);
 For tests and demos, the package includes a non-persistent adapter:
 
 ```ts
-import { memoryStorage } from "@evo-marketing/attribution-react-native";
+import { memoryStorage } from "@evomarketing/attribution-react-native";
 
 configureEvoAttribution({
   pixelKey: "pk_your_brand_key",
