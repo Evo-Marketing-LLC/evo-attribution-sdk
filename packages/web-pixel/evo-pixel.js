@@ -2,6 +2,11 @@
  * EVO pixel — reports storefront purchases back to Dialed for creator attribution.
  *
  * Install (paste once, ideally in <head>):
+ *   <script>
+ *     window.evo = window.evo || function () {
+ *       (window.evo.q = window.evo.q || []).push(arguments);
+ *     };
+ *   </script>
  *   <script async src="https://dialed.evomarketing.co/evo-pixel.js" data-pixel-key="pk_..."></script>
  *
  * Then on the order-confirmation page:

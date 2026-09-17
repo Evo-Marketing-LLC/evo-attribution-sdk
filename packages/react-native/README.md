@@ -40,7 +40,7 @@ await trackInstall(true, enteredCode);
 await trackPurchase("store-transaction-id", 49.99, "USD", enteredCode);
 ```
 
-For a TestFlight or store-sandbox purchase, pass the optional fifth argument so the event can validate the connection without entering production totals:
+For a TestFlight or store-sandbox purchase, pass the optional fifth argument so the service retains the test row without entering it in live totals or activity feeds:
 
 ```ts
 await trackPurchase("sandbox-transaction-id", 49.99, "USD", undefined, {
@@ -94,8 +94,10 @@ Do not use `memoryStorage()` for production installs because its values disappea
 Use the same persistent install ID as a subscriber or user attribute after configuring EVO:
 
 ```ts
-Purchases.setAttributes({ evo_install_id: await getEvoInstallId() });
-Superwall.shared.setUserAttributes({ evo_install_id: await getEvoInstallId() });
+import { getEvoInstallId } from "@evomarketing/attribution-react-native";
+
+await Purchases.setAttributes({ evo_install_id: await getEvoInstallId() });
+await Superwall.shared.setUserAttributes({ evo_install_id: await getEvoInstallId() });
 ```
 
 For a direct Apple App Store connection, the equivalent Swift value is the StoreKit 2 `appAccountToken`:
@@ -109,7 +111,7 @@ try await product.purchase(options: [.appAccountToken(UUID(uuidString: EVOAttrib
 1. Use a real Brand pixel key from **Results → Attribution → Developer setup** in the Dialed client portal.
 2. Open one of the Brand's app attribution links on a device, install or freshly launch the app, and call `console.log(await trackInstall(true))`.
 3. Confirm the result reports `attributed`, `resolution_method`, and `confidence`, then verify the install in the portal.
-4. Call `trackPurchase` with a unique test transaction ID and confirm the conversion. For TestFlight or a store sandbox, pass `{ sandbox: true }` as the fifth argument. Sandbox events confirm the connection but are excluded from production totals. Reusing a transaction ID is deduplicated server-side.
+4. Call `trackPurchase` with a unique test transaction ID and confirm the live conversion. For TestFlight or a store sandbox, pass `{ sandbox: true }` as the fifth argument; the service retains that row for backend verification and deduplication but excludes it from live totals and activity feeds. Reusing a transaction ID is deduplicated server-side.
 
 A successful install is reported once per persistent app installation. Use a fresh install or cleared app storage when repeating the end-to-end install test.
 

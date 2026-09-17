@@ -99,7 +99,7 @@ await trackPurchase("sandbox-transaction-id", 49.99, "USD", undefined, {
 });
 ```
 
-Both forms send `sandbox: true` so the attribution service can keep test purchases out of live revenue totals.
+Both forms send `sandbox: true`. The attribution service persists the test row for verification and deduplication, then excludes it from live revenue totals and live activity feeds.
 
 ## If you use RevenueCat, Superwall, or Apple direct
 
@@ -112,8 +112,10 @@ try await product.purchase(options: [.appAccountToken(UUID(uuidString: EVOAttrib
 ```
 
 ```ts
-Purchases.setAttributes({ evo_install_id: await getEvoInstallId() });
-Superwall.shared.setUserAttributes({ evo_install_id: await getEvoInstallId() });
+import { getEvoInstallId } from "@evomarketing/attribution-react-native";
+
+await Purchases.setAttributes({ evo_install_id: await getEvoInstallId() });
+await Superwall.shared.setUserAttributes({ evo_install_id: await getEvoInstallId() });
 ```
 
 The StoreKit 2 `appAccountToken` line applies when you connect Apple directly instead of using RevenueCat or Superwall. StoreKit 1 apps can use the same value for `payment.applicationUsername`.
@@ -123,9 +125,20 @@ The StoreKit 2 `appAccountToken` line applies when you connect Apple directly in
 Storefronts can load the hosted pixel and report the purchase on the confirmation page:
 
 ```html
+<script>
+  window.evo = window.evo || function () {
+    (window.evo.q = window.evo.q || []).push(arguments);
+  };
+</script>
 <script async src="https://dialed.evomarketing.co/evo-pixel.js" data-pixel-key="pk_your_brand_key"></script>
 <script>evo("purchase", { orderId: "1234", amount: 49.99, currency: "USD" });</script>
 ```
+
+Keep the queue bootstrap before the async script and before every `evo()` call. The pixel drains queued calls in order when it finishes loading.
+
+`orderId` (or its `transactionId` alias) is required for purchases, renewals, and refunds. Use the stable store transaction id so retries deduplicate safely.
+
+For `evo("refund", …)`, pass the refunded amount with either sign. The attribution service stores refunds as a negative absolute value so they reduce net revenue exactly once.
 
 The hosted file is [https://dialed.evomarketing.co/evo-pixel.js](https://dialed.evomarketing.co/evo-pixel.js). [`packages/web-pixel/evo-pixel.js`](packages/web-pixel/evo-pixel.js) is a reference copy and is not the hosted asset.
 
